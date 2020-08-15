@@ -65,7 +65,7 @@ public class Server extends de.lelp.network.Server {
 
             //if both sides want to continue (reset) the game reset it
             if(resetCount == 2){
-                networkClient.reply(200, "Your opponent wants to continue, a new game starts");
+                networkClient.sendOk();
                 reset();
             }else{
                 networkClient.reply(200, "Wait for the Choice of the opponent");

@@ -13,8 +13,6 @@ public class Game {
 
         //draw the main menu
 
-        UsefulHelper.separate(100);
-
         System.out.println(
                 "  _______     ______          ______              ____        ___          \n" +
                 " /_  __(_)___/_  __/___ _____/_  __/___  ___     / __ \\____  / (_)___  ___ \n" +
@@ -62,7 +60,7 @@ public class Game {
                 "/ /___/ /  /  __/ /_/ / /_/  __/  / /_/ /  (__  )  __/ /   | |/ /  __/ /    \n" +
                 "\\____/_/   \\___/\\__,_/\\__/\\___/   \\__,_/  /____/\\___/_/    |___/\\___/_/     \n" +
                 "\n" +
-                "Enter the port on which the server should start on (for example: 4000) \n" +
+                "Enter the port on which the server should start (for example: 4000) \n" +
                 "(make sure the port is free and approved on your router or on the virtual machine)");
 
         //wait for a response of the user
@@ -182,13 +180,11 @@ public class Game {
             Scanner scanner = new Scanner(System.in);
             String input = scanner.next();
 
-            if(input.equalsIgnoreCase("Yes")){
-
+            if(input.contains("n") || input.contains("N")){
+                System.exit(0);
+            }else{
                 DataPackage reply = Main.client.sendRequest("reset");
                 System.out.println(reply.get(0));
-
-            }else if(input.equalsIgnoreCase("No")){
-                System.exit(0);
             }
 
         }catch (Exception ignored){}
