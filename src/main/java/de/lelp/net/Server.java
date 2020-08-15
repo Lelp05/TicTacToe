@@ -1,6 +1,5 @@
 package de.lelp.net;
 
-import de.lelp.main.Game;
 import de.lelp.network.DataPackage;
 
 import java.util.Timer;

@@ -1,6 +1,6 @@
 package de.lelp.net;
 
-import de.lelp.main.Game;
+import de.lelp.main.Main;
 
 public class Client extends de.lelp.network.Client {
 
@@ -12,10 +12,10 @@ public class Client extends de.lelp.network.Client {
     public void registerMethods() {
 
         //redraw the game field
-        methods.put("drawGameField", (dataPackage, socket) -> Game.newTurn((int[]) dataPackage.get(0), (String) dataPackage.get(1)));
+        methods.put("drawGameField", (dataPackage, socket) -> Main.newTurn((int[]) dataPackage.get(0), (String) dataPackage.get(1)));
 
         //check if the game ends
-        methods.put("gameWin", (dataPackage, socket) -> Game.gameWin(dataPackage));
+        methods.put("gameWin", (dataPackage, socket) -> Main.gameWin(dataPackage));
     }
 
     @Override
