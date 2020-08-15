@@ -12,7 +12,7 @@ public class Client extends de.lelp.network.Client {
     public void registerMethods() {
 
         //redraw the game field
-        methods.put("drawGameField", (dataPackage, socket) -> Game.drawGameField((int[]) dataPackage.get(0), (String) dataPackage.get(1)));
+        methods.put("drawGameField", (dataPackage, socket) -> Game.newTurn((int[]) dataPackage.get(0), (String) dataPackage.get(1)));
 
         //check if the game ends
         methods.put("gameWin", (dataPackage, socket) -> Game.gameWin(dataPackage));
@@ -20,6 +20,7 @@ public class Client extends de.lelp.network.Client {
 
     @Override
     public void onDisconnect() {
-        Game.stopGame();
+        System.out.println("The server has stopped");
+        System.exit(0);
     }
 }

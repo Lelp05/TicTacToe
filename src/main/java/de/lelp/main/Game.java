@@ -1,31 +1,43 @@
 package de.lelp.main;
 
+import de.lelp.api.UsefulHelper;
 import de.lelp.net.Client;
 import de.lelp.net.Server;
 import de.lelp.network.DataPackage;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.util.Scanner;
 
 public class Game {
 
     public static void drawMainMenu(){
 
         //draw the main menu
-        System.out.println("Main Menu:");
-        System.out.println("1. Join game");
-        System.out.println("2. Create a Server");
+
+        UsefulHelper.separate(100);
+
+        System.out.println(
+                "  _______     ______          ______              ____        ___          \n" +
+                " /_  __(_)___/_  __/___ _____/_  __/___  ___     / __ \\____  / (_)___  ___ \n" +
+                "  / / / / ___// / / __ `/ ___// / / __ \\/ _ \\   / / / / __ \\/ / / __ \\/ _ \\ \n" +
+                " / / / / /__ / / / /_/ / /__ / / / /_/ /  __/  / /_/ / / / / / / / / /  __/ \n" +
+                "/_/ /_/\\___//_/  \\__,_/\\___//_/  \\____/\\___/   \\____/_/ /_/_/_/_/ /_/\\___/ \n" +
+                "\n"+
+                "By Lelp05 " + "(c)" + UsefulHelper.getYear() + "\n");
+
+        System.out.println("1. Join a game");
+        System.out.println("2. Create a server");
 
         //wait for a response of the user
         try{
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            String input = reader.readLine();
+            System.out.print("> ");
+            Scanner scanner = new Scanner(System.in);
+            String input = scanner.next();
 
             //check if the input was valid
             int option = Integer.parseInt(input);
             if(option == 1){
-                joinGame();
+                joinServer();
             }else if(option == 2){
                 createServer();
             }else{
@@ -40,14 +52,25 @@ public class Game {
     }
 
     public static void createServer(){
-        System.out.println("Enter the port on which the server should start (for example: 4000)");
 
+        UsefulHelper.separate(100);
+
+        System.out.println(
+                "   ______                __                                                 \n" +
+                "  / ____/_______  ____ _/ /____     ____ _   ________  ______   _____  _____\n" +
+                " / /   / ___/ _ \\/ __ `/ __/ _ \\   / __ `/  / ___/ _ \\/ ___/ | / / _ \\/ ___/\n" +
+                "/ /___/ /  /  __/ /_/ / /_/  __/  / /_/ /  (__  )  __/ /   | |/ /  __/ /    \n" +
+                "\\____/_/   \\___/\\__,_/\\__/\\___/   \\__,_/  /____/\\___/_/    |___/\\___/_/     \n" +
+                "\n" +
+                "Enter the port on which the server should start on (for example: 4000) \n" +
+                "(make sure the port is free and approved on your router or on the virtual machine)");
 
         //wait for a response of the user
         try{
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            String input = reader.readLine();
+            System.out.print("> ");
+            Scanner scanner = new Scanner(System.in);
+            String input = scanner.next();
 
             //check if the input was valid
             int port = Integer.parseInt(input);
@@ -62,15 +85,25 @@ public class Game {
 
     }
 
-    public static void joinGame(){
+    public static void joinServer(){
 
         try{
 
-            System.out.println("Enter the ip and the port of the game server ( 0.0.0.0:4000 )");
+            UsefulHelper.separate(100);
+
+            System.out.println(
+                    "       __      _                                                 \n" +
+                    "      / /___  (_)___     ____ _   ________  ______   _____  _____\n" +
+                    " __  / / __ \\/ / __ \\   / __ `/  / ___/ _ \\/ ___/ | / / _ \\/ ___/\n" +
+                    "/ /_/ / /_/ / / / / /  / /_/ /  (__  )  __/ /   | |/ /  __/ /    \n" +
+                    "\\____/\\____/_/_/ /_/   \\__,_/  /____/\\___/_/    |___/\\___/_/     \n" +
+                    "\n" +
+                    "Enter the ip and the port of the game server ( 127.0.0.1:4000 )");
 
             //wait for a response of the user
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            String input = reader.readLine();
+            System.out.print("> ");
+            Scanner scanner = new Scanner(System.in);
+            String input = scanner.next();
 
             //check if the input was valid
             String[] parts = input.split(":");
@@ -84,7 +117,7 @@ public class Game {
 
                 if(!Main.client.isConnected()){
                     System.out.println("The server seems to be offline");
-                    stopGame();
+                    System.exit(0);
                 }
 
             }else{
@@ -98,64 +131,63 @@ public class Game {
 
     }
 
-    public static void stopGame(){
-
-        //set the server instance to null
-        if(Main.server != null){
-            Main.server.stop();
-            Main.server = null;
-        }
-
-        //set the client to null
-        if(Main.client != null){
-            Main.client.stop();
-            Main.client = null;
-        }
-
-        System.out.println("The Game has been stopped");
-
-        drawMainMenu();
-    }
-
     public static void gameWin(DataPackage pack){
+
+        UsefulHelper.separate(100);
+
         if (pack.get(0).equals("Win")) {
 
             //print who won's
             if (pack.get(1).equals(Main.client.getUuid())) {
-                System.out.println(" __ __                          ");
-                System.out.println("|  |  |___ _ _    _ _ _ ___ ___ ");
-                System.out.println("|_   _| . | | |  | | | | . |   |");
-                System.out.println("  |_| |___|___|  |_____|___|_|_|");
-                System.out.println("");
-                System.out.println("Want to continue (Yes) (No)");
+
+                System.out.println(
+                        "__  __                                  \n" +
+                        "\\ \\/ /___  __  __   _      ______  ____ \n" +
+                        " \\  / __ \\/ / / /  | | /| / / __ \\/ __ \\\n" +
+                        " / / /_/ / /_/ /   | |/ |/ / /_/ / / / /\n" +
+                        "/_/\\____/\\__,_/    |__/|__/\\____/_/ /_/ \n" +
+                        "\n" +
+                        "Want to continue (Yes) (No)\n");
+
 
             } else {
-                System.out.println(" __ __            _         _   ");
-                System.out.println("|  |  |___ _ _   | |___ ___| |_ ");
-                System.out.println("|_   _| . | | |  | | . |_ -|  _|");
-                System.out.println("  |_| |___|___|  |_|___|___|_|  ");
-                System.out.println("");
-                System.out.println("Want to continue (Yes) (No)");
+                System.out.println(
+                        "__  __               __           __ \n" +
+                        "\\ \\/ /___  __  __   / /___  _____/ /_\n" +
+                        " \\  / __ \\/ / / /  / / __ \\/ ___/ __/\n" +
+                        " / / /_/ / /_/ /  / / /_/ (__  ) /_  \n" +
+                        "/_/\\____/\\__,_/  /_/\\____/____/\\__/  \n" +
+                        "\n" +
+                        "Want to continue (Yes) (No)\n");
             }
 
         } else if (pack.get(0).equals("Draw")) {
-            System.out.println("   _               ");
-            System.out.println(" _| |___ ___ _ _ _ ");
-            System.out.println("| . |  _| .'| | | |");
-            System.out.println("|___|_| |__,|_____|");
-            System.out.println("");
-            System.out.println("Want to continue (Yes) (No)");
+            System.out.println(
+                    "    ____                     \n" +
+                    "   / __ \\_________ __      __\n" +
+                    "  / / / / ___/ __ `/ | /| / /\n" +
+                    " / /_/ / /  / /_/ /| |/ |/ / \n" +
+                    "/_____/_/   \\__,_/ |__/|__/  \n" +
+                    "\n" +
+                    "Want to continue (Yes) (No)\n");
         }
+
+        //draw the game field
+        drawGameField((int[]) pack.get(2));
 
         try{
 
             //wait for a input of the user
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            String input = reader.readLine();
+            System.out.print("> ");
+            Scanner scanner = new Scanner(System.in);
+            String input = scanner.next();
 
             if(input.equalsIgnoreCase("Yes")){
-                Main.client.sendRequest("reset");
-            }else{
+
+                DataPackage reply = Main.client.sendRequest("reset");
+                System.out.println(reply.get(0));
+
+            }else if(input.equalsIgnoreCase("No")){
                 System.exit(0);
             }
 
@@ -168,12 +200,12 @@ public class Game {
        try{
 
            //wait for a input of the user
-           BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-           String input = reader.readLine();
+           System.out.print("> ");
+           Scanner scanner = new Scanner(System.in);
+           String input = scanner.next();
 
            //check if the player wants to make a turn
            int field = Integer.parseInt(input);
-
 
            //check if the field exists and if the field is empty
            if(field <= 9 && gameField[field-1] == -1){
@@ -187,12 +219,14 @@ public class Game {
 
 
        }catch (Exception e){
-           drawGameField(gameField, playerOnTurn);
+           newTurn(gameField, playerOnTurn);
        }
 
     }
 
-    public static void drawGameField(int[] gameField, String playerOnTurn){
+    public static void newTurn(int[] gameField, String playerOnTurn){
+
+        UsefulHelper.separate(100);
 
         if(playerOnTurn.equals(Main.client.getUuid())){
             System.out.println("\n It's your turn");
@@ -200,12 +234,7 @@ public class Game {
             System.out.println("\n wait for the opponents turn");
         }
 
-        System.out.println(
-                "\n" +
-                toPrintable(0, gameField) + " | " + toPrintable(1, gameField) + " | " + toPrintable(2, gameField) + "\n" +
-                toPrintable(3, gameField) + " | " + toPrintable(4, gameField) + " | " + toPrintable(5, gameField) + "\n" +
-                toPrintable(6, gameField) + " | " + toPrintable(7, gameField) + " | " + toPrintable(8, gameField) + "\n"
-        );
+        drawGameField(gameField);
 
         //let the player make a turn
         if(playerOnTurn.equals(Main.client.getUuid())) {
@@ -213,6 +242,15 @@ public class Game {
             waitForGameInput(gameField, playerOnTurn);
         }
 
+    }
+
+    public static void drawGameField(int[] gameField){
+        System.out.println(
+                "\n" +
+                toPrintable(0, gameField) + " | " + toPrintable(1, gameField) + " | " + toPrintable(2, gameField) + "\n" +
+                toPrintable(3, gameField) + " | " + toPrintable(4, gameField) + " | " + toPrintable(5, gameField) + "\n" +
+                toPrintable(6, gameField) + " | " + toPrintable(7, gameField) + " | " + toPrintable(8, gameField) + "\n"
+        );
     }
 
     private static String toPrintable(int i, int[] gameField){

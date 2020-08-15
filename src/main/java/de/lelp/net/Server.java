@@ -14,6 +14,8 @@ public class Server extends de.lelp.network.Server {
                                 -1, -1, -1,
                                 -1, -1, -1};
 
+    private int resetCount = 0;
+
     private String playerOnTurn = "Player-1";
 
     public Server(int port, long pingInterval, boolean muted, boolean logging) {
@@ -41,11 +43,13 @@ public class Server extends de.lelp.network.Server {
                     playerOnTurn = "Host";
                 }
 
-                //broadcast the new game field
-                broadcastPackage(new DataPackage("drawGameField", gameField, playerOnTurn));
-
                 //check if someone won the game
-                generalWin();
+                if(!generalWin()){
+
+                    //broadcast the new game field if no player won
+                    broadcastPackage(new DataPackage("drawGameField", gameField, playerOnTurn));
+
+                }
 
                 networkClient.sendOk();
 
@@ -54,7 +58,19 @@ public class Server extends de.lelp.network.Server {
             }
         });
 
-        methods.put("reset", (dataPackage, networkClient) -> reset());
+        methods.put("reset", (dataPackage, networkClient) -> {
+
+            //increase the reset count
+            resetCount ++;
+
+            //if both sides want to continue (reset) the game reset it
+            if(resetCount == 2){
+                networkClient.reply(200, "Your opponent wants to continue, a new game starts");
+                reset();
+            }else{
+                networkClient.reply(200, "Wait for the Choice of the opponent");
+            }
+        });
 
     }
 
@@ -70,25 +86,45 @@ public class Server extends de.lelp.network.Server {
     @Override
     public void onClientDisconnect(NetworkClient client) {
         //a client disconnected stop the game
-        Game.stopGame();
+        System.out.println("Your opponent has left the game");
+        System.exit(0);
     }
 
-    private void generalWin(){
+    private boolean generalWin(){
+
+        boolean isFinish = false;
 
         //check if the host won
         if(checkWinner(0)){
-            broadcastPackage(new DataPackage("gameWin", "Win", "Host"));
+            broadcastPackage(new DataPackage("gameWin", "Win", "Host", gameField));
+
+            //set the player on turn to the loser
+            playerOnTurn = "Player-1";
+
+            //set finish to true
+            isFinish = true;
         }
 
         //check if the player-1 won
         if(checkWinner(1)){
-            broadcastPackage(new DataPackage("gameWin", "Win", "Player-1"));
+            broadcastPackage(new DataPackage("gameWin", "Win", "Player-1", gameField));
+
+            //set the player on turn to the loser
+            playerOnTurn = "Host";
+
+            //set finish to true
+            isFinish = true;
         }
 
         //check if it is a draw
         if(!checkWinner(0) && !checkWinner(1) && isFull()){
-            broadcastPackage(new DataPackage("gameWin", "Draw", "Both"));
+            broadcastPackage(new DataPackage("gameWin", "Draw", "Both", gameField));
+
+            //set finish to true
+            isFinish = true;
         }
+
+        return isFinish;
     }
 
     private boolean checkWinner(int state){
@@ -127,6 +163,9 @@ public class Server extends de.lelp.network.Server {
         //reset the game field
         gameField = new int[]{ -1, -1, -1, -1, -1, -1, -1, -1, -1};
 
+        //reset the reset count
+        resetCount = 0;
+
         //send the new field to the players
         broadcastPackage(new DataPackage("drawGameField", gameField, playerOnTurn));
     }
@@ -144,7 +183,9 @@ public class Server extends de.lelp.network.Server {
                     }
 
                 }catch (Exception e){
-                    Game.stopGame();
+                    e.printStackTrace();
+                    System.out.println("A error accrue");
+                    System.exit(0);
                 }
 
             }
