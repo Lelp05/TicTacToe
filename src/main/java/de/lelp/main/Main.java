@@ -105,7 +105,7 @@ public class Main {
                     "/ /_/ / /_/ / / / / /  / /_/ /  (__  )  __/ /   | |/ /  __/ /    \n" +
                     "\\____/\\____/_/_/ /_/   \\__,_/  /____/\\___/_/    |___/\\___/_/     \n" +
                     "\n" +
-                    "Enter the ip and the port of the game server ( 127.0.0.1:4000 )");
+                    "Enter the ip and the port of the game server (127.0.0.1:4000)");
 
             //wait for a response of the user
             System.out.print("> ");
@@ -122,7 +122,8 @@ public class Main {
                 //try to join the server
                 client = new Client(parts[0], port, 1000, "Player", "Player-1", true, false);
 
-                if(!client.isConnected()){
+                if(!client.isConnected())
+                {
                     System.out.println("The server seems to be offline");
                     System.exit(0);
                 }

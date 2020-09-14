@@ -53,7 +53,7 @@ public class Server extends de.lelp.network.Server {
                 networkClient.sendOk();
 
             }else{
-                networkClient.reply(400, "it's not your turn");
+                networkClient.sendReply(400, "it's not your turn");
             }
         });
 
@@ -67,7 +67,7 @@ public class Server extends de.lelp.network.Server {
                 networkClient.sendOk();
                 reset();
             }else{
-                networkClient.reply(200, "Wait for the Choice of the opponent");
+                networkClient.sendReply(200, "Wait for the Choice of the opponent");
             }
         });
 

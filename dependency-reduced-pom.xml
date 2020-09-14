@@ -18,7 +18,7 @@
         <artifactId>maven-jar-plugin</artifactId>
         <version>2.3.1</version>
         <configuration>
-          <outputDirectory>C:\Users\Leon\OneDrive\Desktop\Workspace\Programmieren\Fertige Sachen</outputDirectory>
+          <outputDirectory>C:\Users\Leon\OneDrive\Desktop\Workspace\Programmieren\Fertige Sachen\Java</outputDirectory>
         </configuration>
       </plugin>
       <plugin>
